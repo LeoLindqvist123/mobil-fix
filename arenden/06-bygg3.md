@@ -16,5 +16,5 @@ nivåer i `tests/`, men de täcker för lite.
 modell som gissar "ingen slutar" får redan 0,81 i accuracy.
 
 **Klart när:**
-- [ ] `pytest` är grönt lokalt och i CI.
-- [ ] Du har sett prestandatestet bli rött, till exempel genom att tillfälligt höja tröskeln.
+- [x] `pytest` är grönt lokalt och i CI.
+- [x] Du har sett prestandatestet bli rött, till exempel genom att tillfälligt höja tröskeln.
