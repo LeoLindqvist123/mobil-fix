@@ -30,3 +30,13 @@ def test_indata_andras_inte(liten_df):
     original = liten_df.copy()
     skapa_features(liten_df)
     pd.testing.assert_frame_equal(liten_df, original)
+
+def test_region_versaler_normaliseras():
+    df = pd.DataFrame( #random data för kod test
+        {
+            "manadskostnad": [199.0, 199.0],
+            "data_gb_per_manad": [5.0, 5.0],
+            "region": ["STOCKHOLM", "  VÄST  "],
+        }
+    )
+    assert skapa_features(df)["region"].tolist() == ["Stockholm", "Väst"]
