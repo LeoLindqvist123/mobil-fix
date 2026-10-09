@@ -37,3 +37,8 @@ jobs:
       - run: pip install -e .
 
       - run: python -m churn.model
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: modell-${{ github.sha }}
+          path: outputs/
