@@ -74,3 +74,5 @@ python -m churn.score           # skriver outputs/ringlista.csv
 | `models/modell.joblib` | Modellen som kundtjänst använder just nu |
 | `arenden/` | Ärendena, och `skapa.sh` som gör dem till issues |
 | `.github/workflows/ci.yml` | Vårt CI |
+
+Testrad för ärende 6.
