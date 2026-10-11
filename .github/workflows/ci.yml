@@ -3,8 +3,20 @@ name: CI
 on:
   push:
     branches: [main]
+    paths:
+      - "src/**"
+      - "data/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - ".github/workflows/**"
   pull_request:
     branches: [main]
+    paths:
+      - "src/**"
+      - "data/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - ".github/workflows/**"
 
 jobs:
   test:
@@ -65,7 +77,7 @@ jobs:
         with:
           name: modell-${{ github.sha }}
           path: outputs/
-      
+
       - name: Skriv mätvärden i Summary
         run: |
           echo "## Mätvärden för modell-${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
