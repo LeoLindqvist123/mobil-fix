@@ -63,3 +63,5 @@ jobs:
           path: outputs/
 
       - run: python -m churn.evaluate
+        env:
+           MIN_ROC_AUC: "0.95"
