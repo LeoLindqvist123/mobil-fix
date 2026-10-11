@@ -3,23 +3,31 @@ name: CI
 on:
   push:
     branches: [main]
-    paths:
-      - "src/**"
-      - "data/**"
-      - "tests/**"
-      - "pyproject.toml"
-      - ".github/workflows/**"
   pull_request:
     branches: [main]
-    paths:
-      - "src/**"
-      - "data/**"
-      - "tests/**"
-      - "pyproject.toml"
-      - ".github/workflows/**"
 
 jobs:
+  andringar:
+    runs-on: ubuntu-latest
+    outputs:
+      kod: ${{ steps.filter.outputs.kod }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            kod:
+              - "src/**"
+              - "data/**"
+              - "tests/**"
+              - "pyproject.toml"
+              - ".github/workflows/**"
+
   test:
+    needs: andringar
+    if: needs.andringar.outputs.kod == 'true'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -87,3 +95,16 @@ jobs:
           jq -r 'to_entries[] | "| \(.key) | \(.value) |"' outputs/matvarden.json >> $GITHUB_STEP_SUMMARY
 
       - run: python -m churn.evaluate
+
+  ci-klar:
+    needs: [andringar, test, train, utvardera]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kontrollera att inget jobb misslyckades
+        run: |
+          if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" || "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "Något jobb misslyckades."
+            exit 1
+          fi
+          echo "Allt OK."
