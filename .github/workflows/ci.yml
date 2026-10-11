@@ -75,3 +75,5 @@ jobs:
           jq -r 'to_entries[] | "| \(.key) | \(.value) |"' outputs/matvarden.json >> $GITHUB_STEP_SUMMARY
 
       - run: python -m churn.evaluate
+        env:
+           MIN_ROC_AUC: "0.95"
