@@ -18,6 +18,8 @@ vilken data den kom. Modellfiler ska inte ligga i Git.
 `model.py` skriver redan in commit och en kontrollsumma för datan.
 
 **Klart när:**
-- [ ] Artefakten `modell-<sha>` syns längst ner på körningens sida.
-- [ ] Mätvärdena syns i Summary.
-- [ ] `models/` är borta, och `.gitignore` stoppar modellfiler.
+- [x] Artefakten `modell-<sha>` syns längst ner på körningens sida.
+- [x] Mätvärdena syns i Summary.
+- [x] `models/` är borta, och `.gitignore` stoppar modellfiler.
+
+Allt är klart
