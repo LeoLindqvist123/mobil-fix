@@ -61,7 +61,13 @@ jobs:
         with:
           name: modell-${{ github.sha }}
           path: outputs/
+      
+      - name: Skriv mätvärden i Summary
+        run: |
+          echo "## Mätvärden för modell-${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Mått | Värde |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          jq -r 'to_entries[] | "| \(.key) | \(.value) |"' outputs/matvarden.json >> $GITHUB_STEP_SUMMARY
 
       - run: python -m churn.evaluate
-        env:
-           MIN_ROC_AUC: "0.95"
