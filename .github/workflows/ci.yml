@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
 
 concurrency:
-   group: ${{ github.workflow }}-${{ github.ref }}
-   cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   andringar:
@@ -34,7 +34,7 @@ jobs:
 
   test:
     needs: andringar
-    if: needs.andringar.outputs.kod == 'true'
+    if: needs.andringar.outputs.kod == 'true' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -116,7 +116,7 @@ jobs:
           fi
           echo "Allt OK."
 
-    ringlista:
+  ringlista:
     needs: utvardera
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
