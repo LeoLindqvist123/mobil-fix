@@ -29,6 +29,7 @@ jobs:
               - "src/**"
               - "data/**"
               - "tests/**"
+              - "kontroll/**"                #
               - "pyproject.toml"
               - ".github/workflows/**"
               - ".github/actions/**"
@@ -51,8 +52,20 @@ jobs:
 
       - run: pytest
 
+  validera:                                  
+    needs: andringar
+    if: needs.andringar.outputs.kod == 'true' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ./.github/actions/installera
+
+      - name: Validera kunddata
+        run: python kontroll/schema.py
+
   train:
-    needs: test
+    needs: [test, validera]                  
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -90,7 +103,7 @@ jobs:
       - run: python -m churn.evaluate
 
   ci-klar:
-    needs: [andringar, test, train, utvardera]
+    needs: [andringar, test, validera, train, utvardera]
     if: always()
     runs-on: ubuntu-latest
     steps:
