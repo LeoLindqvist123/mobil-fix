@@ -71,7 +71,7 @@ jobs:
       - name: Validera kunddata
         env:
           DATAFIL: ${{ inputs.datafil || 'data/kundbas.csv' }}
-        RUN: python kontroll/schema.py "$DATAFIL"
+        run: python kontroll/schema.py "$DATAFIL"
 
   train:
     needs: [test, validera]                  
