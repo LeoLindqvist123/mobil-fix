@@ -8,6 +8,11 @@ on:
   schedule:
     - cron: "0 4 * * 1"
   workflow_dispatch:
+    inputs:
+      datafil:
+        description: "datafil att kontrollera"
+        type: string
+        default: "data/kundbas.csv"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -64,7 +69,9 @@ jobs:
            paket: ".[data]"
 
       - name: Validera kunddata
-        run: python kontroll/schema.py
+        env:
+          DATAFIL: ${{ inputs.datafil || 'data/kundbas.csv' }}
+        RUN: python kontroll/schema.py "$DATAFIL"
 
   train:
     needs: [test, validera]                  

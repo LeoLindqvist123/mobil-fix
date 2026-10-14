@@ -1,6 +1,7 @@
+import sys
+
 import pandas as pd
 import pandera.pandas as pa
-import sys
 
 SCHEMA = pa.DataFrameSchema(
     {
@@ -17,7 +18,11 @@ SCHEMA = pa.DataFrameSchema(
     strict=True,
 )
 
-df = pd.read_csv("data/kundbas_ny_leverans.csv")
+datafil = sys.argv[1] if len(sys.argv) > 1 else "data/kundbas.csv"
+print(f"Validerar {datafil}")
+
+df = pd.read_csv(datafil)
+df = df.rename(columns={"manadsavgift": "manadskostnad"})
 
 try:
     SCHEMA.validate(df, lazy=True)
